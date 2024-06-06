@@ -1,9 +1,10 @@
 python -m  pretrain.run \
   --output_dir checkpoint \
-  --data_dir pretrain/wiki_data \
+  --data_dir full_data \
   --do_train True \
   --save_steps 20000 \
   --per_device_train_batch_size 64 \
+  --pretrain_method dupmae \ 
   --model_name_or_path vinai/phobert-base \
   --fp16 True \
   --warmup_ratio 0.1 \

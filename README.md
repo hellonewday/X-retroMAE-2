@@ -1,15 +1,15 @@
 # X-DupMAE
 Running [RetroMAE v2: Duplex Masked Auto-Encoder For Pre-Training Retrieval-Oriented Language Models](https://arxiv.org/abs/2211.08769) on RoBERTa model.
 
-Clone from [hieudx149](https://github.com/hieudx149) [X-RetroMAE](https://github.com/hieudx149/X-RetroMAE) repository.
+This repository source is cloned from [@hieudx149 X-RetroMAE](https://github.com/hieudx149/X-RetroMAE) repository.
 
 **X-DupMAE** tries to modify [RetroMAE v2](https://github.com/staoxiao/RetroMAE) to be compatible with RoBERTa and XLM-RoBERTa, hope this project will help anyone who wants to apply RetroMAE v2 to their own language rather than English.
 
 ## Modification 
 Compare to [hieudx149](https://github.com/hieudx149) version:
-- Clone [RetroMAE v2](https://github.com/staoxiao/RetroMAE) modeling_duplex.py and change all Bert* to Roberta* 
-- Clone DupMAECollator to data.py
-- Add code to switch between retromae and dupmae in run.py 
+- Copy [RetroMAE v2](https://github.com/staoxiao/RetroMAE) modeling_duplex.py and change all Bert* to Roberta* 
+- Copy DupMAECollator class to data.py
+- Copy code to switch between `retromae` and `dupmae` in run.py 
 
 ## Setup
 ```
