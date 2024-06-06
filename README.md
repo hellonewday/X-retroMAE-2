@@ -1,16 +1,15 @@
-# X-RetroMAE
-[RetroMAE: Pre-Training Retrieval-oriented Language Models Via Masked Auto-Encoder](https://arxiv.org/pdf/2205.12035.pdf) is a powerful model for dense retrieval task, it is pretrained on unlabeled data, which is very useful for languages that don't have a lot of labeled data.
+# X-DupMAE
+Running [RetroMAE v2: Duplex Masked Auto-Encoder For Pre-Training Retrieval-Oriented Language Models](https://arxiv.org/abs/2211.08769) on RoBERTa model.
 
-**X-RetroMAE** tries to modify [RetroMAE](https://github.com/staoxiao/RetroMAE) to be compatible with RoBERTa and XLM-RoBERTa, hope this project will help anyone who wants to apply RetroMAE to their own language rather than English.
+Clone from [hieudx149](https://github.com/hieudx149) [X-RetroMAE](https://github.com/hieudx149/X-RetroMAE) repository.
 
-## Modification
-Here I list all the changes of X-RetroMAE compared to RetroMAE
-* Change all Bert* to Roberta* in src/pretrain/enhancedDecoder.py, src/pretrain/modeling.py, src/pretrain/run.py 
-* In pretrain/modeling.py:
-  * self.lm.bert -> self.lm.roberta
-  * self.lm.cls -> self.lm.lm_head
-* In pretrain/data.py: I create a DataCollatorForWholeWordMask Class for my own tokenizer
-* In src/examples/pretra/preprocess.py: I changed a bit to fit my data, but most of it is still based on the original code
+**X-DupMAE** tries to modify [RetroMAE v2](https://github.com/staoxiao/RetroMAE) to be compatible with RoBERTa and XLM-RoBERTa, hope this project will help anyone who wants to apply RetroMAE v2 to their own language rather than English.
+
+## Modification 
+Compare to [hieudx149](https://github.com/hieudx149) version:
+- Clone [RetroMAE v2](https://github.com/staoxiao/RetroMAE) modeling_duplex.py and change all Bert* to Roberta* 
+- Clone DupMAECollator to data.py
+- Add code to switch between retromae and dupmae in run.py 
 
 ## Setup
 ```
