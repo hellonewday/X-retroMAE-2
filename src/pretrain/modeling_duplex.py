@@ -55,6 +55,7 @@ class DupMAEForPretraining(nn.Module):
         reps, _ = torch.max(logits + mask, dim=1)  # B V
         return reps
 
+
     def decoder_ot_loss(self, ot_embedding, bag_word_weight):
         input = F.log_softmax(ot_embedding, dim=-1)
         bow_loss = torch.mean(-torch.sum(bag_word_weight * input, dim=1))
@@ -73,8 +74,9 @@ class DupMAEForPretraining(nn.Module):
 
         cls_hiddens = lm_out.hidden_states[-1][:, 0]
         mlm_loss = self.decoder_mlm_loss(cls_hiddens, decoder_input_ids, decoder_attention_mask, decoder_labels)
-
+        
         ot_embedding = self.ot_embedding(lm_out.logits[:, 1:], encoder_attention_mask[:, 1:])
+        
         bow_loss = self.decoder_ot_loss(ot_embedding, bag_word_weight=bag_word_weight)
 
         loss = mlm_loss + self.model_args.bow_loss_weight * bow_loss + lm_out.loss
@@ -84,7 +86,7 @@ class DupMAEForPretraining(nn.Module):
 
 
     def mlm_loss(self, hiddens, labels):
-        pred_scores = self.lm.cls(hiddens)
+        pred_scores = self.lm.lm_head(hiddens)
         masked_lm_loss = self.cross_entropy(
             pred_scores.view(-1, self.lm.config.vocab_size),
             labels.view(-1)

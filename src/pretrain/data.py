@@ -22,6 +22,9 @@ class DatasetForPretraining(torch.utils.data.Dataset):
 
 @dataclass
 class DataCollatorForWholeWordMask(DataCollatorForLanguageModeling):
+    max_seq_length: int = 512
+    encoder_mlm_probability: float = 0.15
+    decoder_mlm_probability: float = 0.15
     """This function built to adapt for PhoBertTokenizer"""
     def _whole_word_mask(self, input_tokens: List[str], max_predictions=256):
         """
@@ -76,7 +79,6 @@ class DupMAECollator(DataCollatorForWholeWordMask):
         bag_word_weight = []
 
         tgt_len = self.max_seq_length - self.tokenizer.num_special_tokens_to_add(False)
-
         for e in examples:
             e_trunc = self.tokenizer.build_inputs_with_special_tokens(e['token_ids'][:tgt_len])
             tokens = [self.tokenizer._convert_id_to_token(tid) for tid in e_trunc]
@@ -105,11 +107,10 @@ class DupMAECollator(DataCollatorForWholeWordMask):
             encoder_mlm_mask_batch.append(torch.tensor(text_encoder_mlm_mask))
             decoder_matrix_attention_mask_batch.append(1 - torch.tensor(text_matrix_attention_mask))
 
-            weight = torch.zeros(size=(self.tokenizer.vocab_size,))
+            weight = torch.zeros(size=(self.tokenizer.vocab_size+1,))
             for t in e['token_ids'][:tgt_len]:
                 weight[t] = 1 / len(e['token_ids'][:tgt_len])
             bag_word_weight.append(weight.unsqueeze(0))
-
         input_ids_batch = tensorize_batch(input_ids_batch, self.tokenizer.pad_token_id)
         attention_mask_batch = tensorize_batch(attention_mask_batch, 0)
         origin_input_ids_batch = input_ids_batch.clone()
@@ -118,7 +119,6 @@ class DupMAECollator(DataCollatorForWholeWordMask):
         decoder_labels_batch = tensorize_batch(decoder_labels_batch, -100)
         matrix_attention_mask_batch = tensorize_batch(decoder_matrix_attention_mask_batch, 0)
         bag_word_weight = torch.cat(bag_word_weight, dim=0)
-
         batch = {
             "encoder_input_ids": encoder_input_ids_batch,
             "encoder_attention_mask": attention_mask_batch,

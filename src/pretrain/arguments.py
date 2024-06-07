@@ -26,6 +26,9 @@ class ModelArguments:
     """
     Arguments pertaining to which model/config/tokenizer we are going to fine-tune, or train from scratch.
     """
+    pretrain_method: Optional[str] = field(
+        default=None, metadata={"help": "Pretrain method: retromae or dupmae"}
+    )
 
     model_name_or_path: Optional[str] = field(
         default='vinai/phobert-base',
@@ -36,6 +39,9 @@ class ModelArguments:
     )
     config_name: Optional[str] = field(
         default=None, metadata={"help": "Pretrained config name or path if not the same as model_name"}
+    )
+    bow_loss_weight: Optional[float] = field(
+        default=0.1, metadata={"help": "The weight of bag_of_word_loss"}
     )
 
     n_head_layers: int = field(default=1)

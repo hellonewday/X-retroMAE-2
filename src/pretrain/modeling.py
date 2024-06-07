@@ -40,6 +40,7 @@ class RetroMAEForPretraining(nn.Module):
 
         decoder_embedding_output = self.decoder_embeddings(input_ids=decoder_input_ids)
         hiddens = torch.cat([cls_hiddens, decoder_embedding_output[:, 1:]], dim=1)
+        
         decoder_position_ids = self.lm.roberta.embeddings.position_ids[:, :decoder_input_ids.size(1)]
         decoder_position_embeddings = self.lm.roberta.embeddings.position_embeddings(decoder_position_ids)  # B L D
         query = decoder_position_embeddings + cls_hiddens
